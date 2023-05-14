@@ -1,0 +1,26 @@
+{
+  "name": "api_prisma_learning",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "dev": "DEBUG=express:* ts-node-dev --exit-child --transpile-only --ignore-watch node_modules ./src/server.ts",
+    "ex:init-prisma": "yarn prisma init",
+    "ex:generate-migrate-dev": "yarn prisma migrate dev",
+    "ex:generate-migrate-prod": "yarn prisma migrate deploy",
+    "init:prisma-studio": "npx prisma studio",
+    "start:db": "docker run -ti --name postgres_fin -p 5432:5432 -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=123456 -d postgres:latest"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.17",
+    "@types/node": "^20.1.3",
+    "prisma": "^4.14.0",
+    "ts-node": "^10.9.1",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.0.4"
+  },
+  "dependencies": {
+    "@prisma/client": "^4.14.0",
+    "express": "^4.18.2"
+  }
+}
