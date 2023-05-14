@@ -4,7 +4,7 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "dev": "DEBUG=express:* ts-node-dev --exit-child --transpile-only --ignore-watch node_modules ./src/server.ts",
+    "dev": "ts-node-dev --exit-child --transpile-only --ignore-watch node_modules ./src/server.ts",
     "ex:init-prisma": "yarn prisma init",
     "ex:generate-migrate-dev": "yarn prisma migrate dev",
     "ex:generate-migrate-prod": "yarn prisma migrate deploy",
@@ -21,6 +21,8 @@
   },
   "dependencies": {
     "@prisma/client": "^4.14.0",
-    "express": "^4.18.2"
+    "express": "^4.18.2",
+    "js-sha256": "^0.9.0",
+    "yup": "^1.1.1"
   }
 }
