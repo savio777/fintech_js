@@ -1,9 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { AppDispatch, AppThunk } from "../..";
 import { ISession } from "./types";
-import SignInRequest, {
-  IBodyParamSignInRequest,
-} from "../../../services/Session/SignInRequest";
 
 const initialState: ISession = {
   user: {
@@ -34,13 +30,5 @@ const session = createSlice({
 });
 
 export const { signIn, signOut } = session.actions;
-
-export function asyncSignIn(data: IBodyParamSignInRequest): AppThunk {
-  // @ts-ignore
-  return async function (dispatch: AppDispatch) {
-    const response = await SignInRequest(data);
-    dispatch(signIn(response));
-  };
-}
 
 export default session.reducer;

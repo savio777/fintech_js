@@ -2,6 +2,7 @@ import { sha256 } from "js-sha256";
 
 import { IUSerCreateDto } from "../validators/create-user.dto";
 import { prismaClient } from "../../database/prismaClient";
+import { CreateAccountService } from "../../account/services/create-account.service";
 
 export async function CreateUserService(dto: IUSerCreateDto) {
   const { cpf, email, name, password } = dto;
@@ -25,7 +26,9 @@ export async function CreateUserService(dto: IUSerCreateDto) {
     },
   });
 
+  const account = await CreateAccountService(user.id);
+
   const { password: _, ...userCreated } = user;
 
-  return userCreated;
+  return { user: userCreated, account };
 }
