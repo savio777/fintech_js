@@ -1,13 +1,13 @@
 import { NextFunction, Request, Response } from "express";
-import { GetAccountServiceByIdUser } from "../services/get-account-by-id-user.service";
+import { GetTransferByIdUserService } from "../services/get-transfer-by-id-user.service";
 
-export async function GetAccountController(
+export async function GetTransferByIdUserController(
   req: Request,
   res: Response,
   next: NextFunction
 ) {
   try {
-    return res.json(await GetAccountServiceByIdUser(req.user.id));
+    return res.json(await GetTransferByIdUserService(req.user.id));
   } catch (error) {
     console.log({ error });
     const err = new BadRequestException(error);

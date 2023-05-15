@@ -51,7 +51,6 @@ model Account {
 
 model Transfer {
   id               String @id @default(uuid())
-  type_transfer    String // add | sub
   through_transfer String // PIX | TED | DOCS
 
   id_account_sender String
@@ -59,6 +58,8 @@ model Transfer {
 
   id_account_recipient String
   accountRecipient     Account @relation(fields: [id_account_recipient], references: [id], name: "transferRecipient")
+
+  value Float
 
   @@map("transfers")
 }

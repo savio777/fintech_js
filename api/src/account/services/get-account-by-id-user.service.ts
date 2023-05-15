@@ -1,7 +1,7 @@
 import { prismaClient } from "../../database/prismaClient";
 import { GetUserByIdService } from "../../user/services/get-user-by-id.service";
 
-export async function GetAccountService(idUser: string, getError = true) {
+export async function GetAccountServiceByIdUser(idUser: string, getError = true) {
   const user = await GetUserByIdService(idUser, false);
 
   if (!user) {
