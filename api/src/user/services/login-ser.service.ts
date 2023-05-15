@@ -3,7 +3,7 @@ import jwt from "jsonwebtoken";
 
 import { prismaClient } from "../../database/prismaClient";
 import { ILoginUSerDto } from "../validators/login-user.dto";
-import { GetAccountService } from "../../account/services/get-account-by-id-user.service";
+import { GetAccountServiceByIdUser } from "../../account/services/get-account-by-id-user.service";
 
 export async function LoginUserService(dto: ILoginUSerDto) {
   const { cpf, password } = dto;
