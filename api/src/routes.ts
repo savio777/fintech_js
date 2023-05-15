@@ -6,6 +6,7 @@ import { CreateUserController } from "./user/controllers/create-user.controller"
 import { LoginUserController } from "./user/controllers/login-user.controller";
 import { CreateBankController } from "./bank/controllers/create-bank.controller";
 import { CreateAccountController } from "./account/controllers/create-account.controller";
+import { GetAccountController } from "./account/controllers/get-account.controller";
 
 export const router = Router();
 
@@ -28,3 +29,4 @@ router.post("/banks", CreateBankController);
 
 // account
 router.post("/accounts", CreateAccountController);
+router.get("/accounts", GetAccountController);
