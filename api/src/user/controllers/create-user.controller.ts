@@ -8,8 +8,6 @@ export async function CreateUserController(
   res: Response,
   next: NextFunction
 ) {
-  //throw new BadRequestException("teste err");
-
   try {
     const dto = UserCreateDto.validateSync(req.body);
 

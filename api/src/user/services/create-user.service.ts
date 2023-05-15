@@ -11,8 +11,6 @@ export async function CreateUserService(dto: IUSerCreateDto) {
   });
 
   if (userExist) {
-    console.log({ userExist });
-
     throw new Error("Usuário já existe");
   }
 
@@ -27,5 +25,7 @@ export async function CreateUserService(dto: IUSerCreateDto) {
     },
   });
 
-  return { ...user, password: undefined };
+  const { password: _, ...userCreated } = user;
+
+  return userCreated;
 }

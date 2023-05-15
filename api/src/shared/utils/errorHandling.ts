@@ -8,9 +8,11 @@ export default (
 ) => {
   if (error && error.statusCode) {
     res.status(error.statusCode).json({
-      statusCode: error.statusCode,
-      message: error.message?.replace(/Error: /,''),
-      errors: error?.errors,
+      statusCode: error.statusCode || 500,
+      message: error.message
+        ? error.message?.replace(/Error: /, "")
+        : "Internal Server Error",
+      errors: error?.errors?.length > 0 ? error?.errors : undefined,
     });
   } else {
     console.log(error);
