@@ -4,6 +4,8 @@ import { authMiddleware } from "./shared/utils/authMiddleware";
 
 import { CreateUserController } from "./user/controllers/create-user.controller";
 import { LoginUserController } from "./user/controllers/login-user.controller";
+import { CreateBankController } from "./bank/controllers/create-bank.controller";
+import { CreateAccountController } from "./account/controllers/create-account.controller";
 
 export const router = Router();
 
@@ -20,3 +22,9 @@ router.use(authMiddleware);
 router.get("/auth-test", (req, res) => {
   return res.json({ message: "user auth", user: req.user });
 });
+
+// bank
+router.post("/banks", CreateBankController);
+
+// account
+router.post("/accounts", CreateAccountController);

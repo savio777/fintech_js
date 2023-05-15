@@ -19,8 +19,6 @@ export async function LoginUserService(dto: ILoginUSerDto) {
 
   const hash = sha256(password);
 
-  console.log(`${user.password} === ${hash}`);
-
   if (user.password !== hash) {
     throw new Error("Usuário ou senha estão incorretos");
   }

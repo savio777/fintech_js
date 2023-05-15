@@ -2,6 +2,10 @@
 
 [video tutorial](https://www.youtube.com/watch?v=nuLTwqPNq-w)
 
+#### passos:
+- rodar docker database
+- cadastrar banco com nome *fin_bank*
+
 #### docker:
 
 ```sh
