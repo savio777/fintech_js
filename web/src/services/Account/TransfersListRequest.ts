@@ -3,6 +3,7 @@ import api from "..";
 export interface ITransfers {
   sender: ITransfer[];
   recipient: ITransfer[];
+  balance: number | null;
 }
 
 export interface ITransfer {

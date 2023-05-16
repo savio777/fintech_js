@@ -8,6 +8,7 @@ export async function GetTransferByIdUserService(idUser: string) {
     return {
       sender: [],
       recipient: [],
+      balance: null,
     };
   }
 
@@ -36,5 +37,6 @@ export async function GetTransferByIdUserService(idUser: string) {
   return {
     sender: transfersSender,
     recipient: transfersRecipient,
+    balance: account.balance,
   };
 }

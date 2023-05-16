@@ -9,6 +9,7 @@ import { CreateAccountController } from "./account/controllers/create-account.co
 import { GetAccountController } from "./account/controllers/get-account.controller";
 import { CreateTransferController } from "./transfer/controllers/create-transfer.controller";
 import { GetTransferByIdUserController } from "./transfer/controllers/get-transfer-by-id-user.controller";
+import { GetAccountByNumberController } from "./account/controllers/get-account-by-number.controller";
 
 export const router = Router();
 
@@ -32,6 +33,10 @@ router.post("/banks", CreateBankController);
 // account
 router.post("/accounts", CreateAccountController);
 router.get("/accounts", GetAccountController);
+router.get(
+  "/accounts/:account_branch/:account_number",
+  GetAccountByNumberController
+);
 
 // transfer
 router.post("/transfers", CreateTransferController);

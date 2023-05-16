@@ -4,6 +4,7 @@ import { toast } from "react-toastify";
 import { AiOutlineRight } from "react-icons/ai";
 import { ImSpinner11 } from "react-icons/im";
 
+import Transfer from "../../components/Transfer";
 import Header from "../../components/Header";
 import { RootState } from "../../store";
 import { formatPrice } from "../../utils/mask";
@@ -19,16 +20,30 @@ import {
   Row,
   ButtonTransparent,
   Column,
+  DialogSendTransfer,
+  IconClose,
 } from "./styles";
-import Transfer from "../../components/Transfer";
+import GetAccountByNumberRequest from "../../services/Account/GetAccountByNumberRequest";
+import SendTransferRequest from "../../services/Account/SendTransferRequest";
+import Button from "../../components/Button";
+import InputCustom from "../../components/InputCustom";
+import { SelectInput } from "../../components/styles";
 
 export default function Home() {
-  const { user, account } = useSelector((state: RootState) => state.session);
+  const { account } = useSelector((state: RootState) => state.session);
+
+  const [isOpenDialogSend, setIsOpenDialogSend] = useState(false);
 
   const [transfers, setTransfers] = useState<ITransfers>({
     recipient: [],
     sender: [],
+    balance: null,
   });
+
+  const [accountNumber, setAccountNumber] = useState("");
+  const [accountBranch, setAccountBranch] = useState("");
+  const [throughTransfer, setThroughTransfer] = useState("");
+  const [valueTransfer, setValueTransfer] = useState("");
 
   const getTransfers = async () => {
     try {
@@ -44,6 +59,37 @@ export default function Home() {
     getTransfers();
   }, []);
 
+  const sendTransferRequest = async () => {
+    try {
+      const response = await GetAccountByNumberRequest(
+        accountBranch,
+        accountNumber
+      );
+
+      SendTransferRequest({
+        id_account_recipient: response.id,
+        id_account_sender: account?.id || "",
+        through_transfer: throughTransfer || "PIX",
+        value: Number(valueTransfer),
+      }).then(() => {
+        toast("Transferência realizada com sucesso!");
+
+        setIsOpenDialogSend(false);
+        getTransfers();
+
+        setAccountNumber("");
+        setAccountBranch("");
+        setValueTransfer("");
+      });
+    } catch (error: any) {
+      if (error?.errors?.length > 0) {
+        toast(error?.errors[0], { type: "error" });
+      } else {
+        toast(error, { type: "error" });
+      }
+    }
+  };
+
   return (
     <Container>
       <Header />
@@ -58,15 +104,15 @@ export default function Home() {
           </Row>
 
           <Row>
-            <SubTitle bold>{formatPrice(account?.balance)}</SubTitle>
+            <SubTitle bold>{formatPrice(transfers?.balance || 0)}</SubTitle>
 
-            <ButtonTransparent>
+            <ButtonTransparent onClick={() => setIsOpenDialogSend(true)}>
               <SubTitle>fazer transferência</SubTitle>
               <AiOutlineRight size={20} color="#000" />
             </ButtonTransparent>
           </Row>
 
-          <Row>
+          <Row center>
             <SubTitle>Recebidos</SubTitle>
 
             <SubTitle>Enviados</SubTitle>
@@ -87,6 +133,53 @@ export default function Home() {
           </Row>
         </Box>
       </Content>
+
+      <DialogSendTransfer open={isOpenDialogSend}>
+        <ButtonTransparent onClick={() => setIsOpenDialogSend(false)} right>
+          <IconClose />
+        </ButtonTransparent>
+        <Title>Fazer transferência</Title>
+
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            sendTransferRequest();
+          }}
+        >
+          <SelectInput
+            value={throughTransfer}
+            onChange={(e) => setThroughTransfer(e.target.value)}
+          >
+            <option value="">Selecione a forma de transferência</option>
+            <option value="PIX">PIX</option>
+            <option value="TED">TED</option>
+            <option value="DOCS">DOCS</option>
+          </SelectInput>
+
+          <InputCustom
+            label="Agência da conta"
+            value={accountBranch}
+            onChange={(e) => setAccountBranch(e.target.value)}
+          />
+
+          <InputCustom
+            label="Número da conta"
+            value={accountNumber}
+            onChange={(e) => setAccountNumber(e.target.value)}
+          />
+
+          <InputCustom
+            label="Valor"
+            value={valueTransfer}
+            onChange={(e) => setValueTransfer(e.target.value)}
+            type="number"
+          />
+
+          <Button full onClick={sendTransferRequest}>
+            enviar
+          </Button>
+        </form>
+      </DialogSendTransfer>
     </Container>
   );
 }
