@@ -13,10 +13,24 @@ export async function GetTransferByIdUserService(idUser: string) {
 
   const transfersSender = await prismaClient.transfer.findMany({
     where: { id_account_sender: account.id },
+    include: {
+      accountRecipient: {
+        include: {
+          user: { select: { name: true, cpf: true, email: true, id: true } },
+        },
+      },
+    },
   });
 
   const transfersRecipient = await prismaClient.transfer.findMany({
     where: { id_account_recipient: account.id },
+    include: {
+      accountSender: {
+        include: {
+          user: { select: { name: true, cpf: true, email: true, id: true } },
+        },
+      },
+    },
   });
 
   return {
