@@ -20,6 +20,10 @@ export async function CreateTransferService(dto: ICreateTransferDto) {
     throw new Error("Usuário não existe");
   }
 
+  if (accountSender.balance - value < 0) {
+    throw new Error("Usuário não possui saldo suficiente");
+  }
+
   const transfer = prismaClient.transfer.create({
     data: {
       id_account_recipient,

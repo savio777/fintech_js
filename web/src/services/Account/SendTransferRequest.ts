@@ -11,5 +11,5 @@ export default async function SendTransferRequest(
   data: BodyData
 ): Promise<object> {
   const response = await api.post("/transfers", data);
-  return response.data;
+  return response?.data;
 }

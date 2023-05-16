@@ -21,14 +21,14 @@ router.get("/", () => {
 router.post("/users", CreateUserController);
 router.post("/login", LoginUserController);
 
+// bank
+router.post("/banks", CreateBankController);
+
 router.use(authMiddleware);
 
 router.get("/auth-test", (req, res) => {
   return res.json({ message: "user auth", user: req.user });
 });
-
-// bank
-router.post("/banks", CreateBankController);
 
 // account
 router.post("/accounts", CreateAccountController);

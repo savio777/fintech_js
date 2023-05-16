@@ -33,6 +33,7 @@ export default function Home() {
   const { account } = useSelector((state: RootState) => state.session);
 
   const [isOpenDialogSend, setIsOpenDialogSend] = useState(false);
+  const [isLoadingTransferSend, setIsLoadingTransferSend] = useState(false);
 
   const [transfers, setTransfers] = useState<ITransfers>({
     recipient: [],
@@ -61,17 +62,21 @@ export default function Home() {
 
   const sendTransferRequest = async () => {
     try {
+      setIsLoadingTransferSend(true);
+
       const response = await GetAccountByNumberRequest(
         accountBranch,
         accountNumber
       );
 
-      SendTransferRequest({
+      const responseSendTransfer = await SendTransferRequest({
         id_account_recipient: response.id,
         id_account_sender: account?.id || "",
         through_transfer: throughTransfer || "PIX",
         value: Number(valueTransfer),
-      }).then(() => {
+      });
+
+      if (responseSendTransfer) {
         toast("Transferência realizada com sucesso!");
 
         setIsOpenDialogSend(false);
@@ -80,13 +85,15 @@ export default function Home() {
         setAccountNumber("");
         setAccountBranch("");
         setValueTransfer("");
-      });
+      }
     } catch (error: any) {
       if (error?.errors?.length > 0) {
         toast(error?.errors[0], { type: "error" });
       } else {
         toast(error, { type: "error" });
       }
+    } finally {
+      setIsLoadingTransferSend(false);
     }
   };
 
@@ -143,7 +150,9 @@ export default function Home() {
         <form
           onSubmit={(e) => {
             e.preventDefault();
-            sendTransferRequest();
+            if (!isLoadingTransferSend) {
+              sendTransferRequest();
+            }
           }}
         >
           <SelectInput
@@ -175,7 +184,15 @@ export default function Home() {
             type="number"
           />
 
-          <Button full onClick={sendTransferRequest}>
+          <Button
+            full
+            onClick={() => {
+              if (isLoadingTransferSend) {
+                sendTransferRequest();
+              }
+            }}
+            disabled={isLoadingTransferSend}
+          >
             enviar
           </Button>
         </form>
